@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import ReactDOM from "react-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import io from "socket.io-client";
 import "./styles.css";
 
 
@@ -23,7 +24,27 @@ const children = ({ remainingTime }) => {
 
 
 function App() {
-  const [tag, setTag] =useState(false);
+  const [tag, setTag] = useState(false);
+  const [yourID, setYourID] = useState();
+  const socketRef = useRef();
+  
+  useEffect(() => {
+    socketRef.current = io.connect("http://localhost:8000");
+    socketRef.current.on("your id", (id) =>{
+      setYourID(id);
+    })
+
+    socketRef.current.on("timer start", (message) => {
+      console.log(message);
+      setTag(true);
+    })
+  },[])
+
+  function sendTimerSign(bool){
+    if(bool) socketRef.current.emit("timer start sign", "timer start!!");
+    else socketRef.current.emit("timer stop sign", "timer stop!!");
+  }
+
   return (
     <div className="App">
       <h1>
@@ -42,9 +63,10 @@ function App() {
         </CountdownCircleTimer>
       </div>
       <div>
-      <button onClick={()=> setTag(true)}>
+      <button onClick={()=> sendTimerSign(true)}>
         START
       </button>
+
     </div>
       <p className="info">
         Change component properties in the code filed on the right to try
