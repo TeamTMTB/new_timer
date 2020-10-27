@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState, useRef, useCallback} from "react";
 import ReactDOM from "react-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import io from "socket.io-client";
@@ -26,6 +26,7 @@ function App() {
   const [yourID, setYourID] = useState();
   const [role, setRole] = useState('');
   const [study, setStudy] = useState(1500);
+  const [key, setKey] = useState(0);
   const [breakTime, setBreak] = useState(300);
   const socketRef = useRef();
   const time=0;
@@ -51,9 +52,16 @@ function App() {
     console.log(study);
   },[study]);
 
-  function handleStudyTime(e){
+  const onChange = useCallback(
+    (e) => {
+      setStudy(e.target.value);
+      console.log("!",study);
+    },[study]);
+
+  const handleStudyTime=(e)=>{
     console.log(e.target.value);
     setStudy(e.target.value);
+    setKey(key);
     console.log("!",study);
   }
 
@@ -71,6 +79,7 @@ function App() {
       <div className="timer-wrapper">
         <CountdownCircleTimer
           isPlaying={tag}
+          key={key}
           duration={study}
           colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
           onComplete={() => [true, 1000]}
