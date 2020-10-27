@@ -27,6 +27,7 @@ function App() {
   const [role, setRole] = useState('');
   const [study, setStudy] = useState(1500);
   const [breakTime, setBreak] = useState(300);
+  const [key, setKey] = useState(0);
   const socketRef = useRef();
   const time=0;
   
@@ -54,6 +55,7 @@ function App() {
   function handleStudyTime(e){
     console.log(e.target.value);
     setStudy(e.target.value);
+    setKey(!key);
     console.log("!",study);
   }
 
@@ -72,6 +74,7 @@ function App() {
         <CountdownCircleTimer
           isPlaying={tag}
           duration={study}
+          key={key}
           colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
           onComplete={() => [true, 1000]}
         >
