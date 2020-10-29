@@ -5,10 +5,6 @@ import io from "socket.io-client";
 import "./styles.css";
 
 
-
-
-
-
 function App() {
   const [tag, setTag] = useState(false);
   const [yourID, setYourID] = useState();
