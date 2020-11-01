@@ -67,6 +67,7 @@ function App() {
   }
 
   function handleStudyTime(e){
+
     setStudy(e.target.value * 60);
     setRemainingTime(study);
     setKey(!key);
